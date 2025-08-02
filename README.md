@@ -1,5 +1,6 @@
-# Unet-For-Polyp-Segmentation-In-Colonoscopy
-Includes a Unet implmentation for polyp segmentation in colonoscopy.
+# Hydra-MONAI-Lightning-FlexibleUNet-ColonPolypSegmentation
+The polyp segmentation for colonoscopy project uses MONAI’s Flexible UNet with PyTorch Lightning and Hydra for streamlined training and configuration.
+
 
 <br>
 
@@ -41,11 +42,11 @@ To run this project, you need to have Python installed. We recommend using a vir
 
 1.  **Run main.py in the following manner to train and test the model normally**:
     ```sh
-    python3 main.py normal
+    python3 train.py 
     ```
 2. **Run main.py in the following manner to train the model by tuning hyperparameters using wanb sweep**:
     ```sh
-    python3 main.py wandb
+    wandb sweep.yaml sweep
     ```
 3. The following are the files and their purpose :
    
@@ -115,26 +116,29 @@ The model used in this project is trained on 'Kvasir-SEG Dataset'. The dataset c
 <br>
 
 ## About the Model
-The project uses the Unet model from `segmentation_models_pytorch` for achieving polyp segmentation in colonoscopy images. The best hyperparamets for the model was chosen after running sweeps using wandb and running deliberations on the result. 
+The project uses the `FlexibleUNet` model from `MOANI` for achieving polyp segmentation in colonoscopy images. The best hyperparamets for the model was chosen after running sweeps using wandb and running deliberations on the result. 
 The final hyperparameters and other parameters used are :
-- encoder_name : efficient-b4
-- encoder_weights : imagenet
+- backbone : "efficientnet-b4"
 - in_channels : 3
-- classes : 1
+- out_channels : 1
+- pre_trained : true
+- decoder_channels : [256, 128, 64, 32, 16]
+- spatial_dimensions : 2    
 - batch_size : 2
-- optimizer : Adam
-- learning_rate : 0.0001
-- epochs : 15
+- num_workers : 8
+- optimizer : sgd
+- learning_rate : 0.007398
+- epochs : 10
+- precision : 32
   
-    - On final testing, the Unet model from smp library with the above paramters gave a performance score of 0.7910 (IoU) and 0.8644 (Dice) [Best approach].
+    - `DiceLoss` from MONAI was used as the loss function and `DiceMetric` from MONAI was used as the metric
       
-    - On final testing, the Unet model from scratch with efficientb4 model gave a performance score of 0.772 (IoU) and 0.8520 (Dice). [Seocnd best approach]
+    - On final testing, the model with the above paramters gave a performance score of 0.854 (Dice).
       
-    - On final testing, the Unet model from scratch gave a very poor performance that renders it futile to even consider it.
- 
+
 
 <br>
 
-## Performance Metrics
+## Performance Metric
 - Training : DiceLoss as loss function.
-- Testing  : IoU score and Dice Score as evaluation metrics.
+- Testing  : DiceMetric as evaluation metric.
