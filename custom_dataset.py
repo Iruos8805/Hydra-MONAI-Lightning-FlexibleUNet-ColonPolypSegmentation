@@ -25,7 +25,7 @@ class CustomMONAIDataset(Dataset):
             # Returning dictionary instead of tuple (which was the earlier approach)
             return sample  # This contains {"image": tensor, "label": tensor}
         else:
-            # Manual loading when no transforms (fallback)
+            # Manual loading when no transforms
             image = np.array(Image.open(item["image"]).convert("RGB"))
             mask = np.array(Image.open(item["label"]).convert("L"))
 
