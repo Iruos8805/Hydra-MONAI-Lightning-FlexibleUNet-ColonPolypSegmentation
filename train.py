@@ -42,7 +42,7 @@ def setup_callbacks(cfg: DictConfig, is_sweep: bool = False):
     callbacks = []
 
     if not is_sweep:
-        # Model checkpointing - let Lightning use default path (lightning_logs/version_X/checkpoints/)
+        # Model checkpointing - let Lightning use default path (this is the fix for wrong checkpoint folder path error)
         checkpoint_callback = ModelCheckpoint(
             monitor=cfg.training.checkpoint.monitor,
             mode=cfg.training.checkpoint.mode,
