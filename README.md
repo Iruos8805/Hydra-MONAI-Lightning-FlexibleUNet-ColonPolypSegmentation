@@ -134,7 +134,6 @@ The final hyperparameters and other parameters used are :
 - precision : 32
 
 <br>
-<br>
   
 - `DiceLoss` from MONAI was used as the loss function and `DiceMetric` from MONAI was used as the metric
       
