@@ -94,24 +94,9 @@ The model used in this project is trained on 'Kvasir-SEG Dataset'. The dataset c
 ## Sweeping, Training and Testing
 
 
-- Three types of Unet models where used in different instances for the project [They are mentioned below].
-- WandB sweeps were then done on the models to find out the best hyperparameters.
+- WandB sweeps were done on the model to find out the best hyperparameters.
 - The model was then trained with these hyperparameters and depending upon their performance additional adjustments were made.
 - The model was then finally tested.
-- The following models for used for segmentation :
-    - Unet model from scratch
-    - Unet model from scratch with efficientb4 as encoder [Second best approach]
-    - Unet model from smp library [Best approach]       
-- WandB sweep result :
-    - The validation range is jittery due to the small batch_size, small validation data size and small difference betwen the losses.    
-    - ![Input](images/runs.png)
-    - ![Input](images/run_table.png)
-- The following is the plot of train and validation Dice loss across epochs in Best approach :
-    - ![Input](images/pre_plot.png)
-- The following is the plot of train and validation Dice loss across epochs in Second best approach :
-    - ![Input](images/customb4_predict.png)
-- Example prediction :
-    - ![Input](images/prediction.png) 
 
 <br>
 
