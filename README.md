@@ -50,30 +50,24 @@ To run this project, you need to have Python installed. We recommend using a vir
     ```
 3. The following are the files and their purpose :
    
-    - **dataset.py** : Defines a CustomDataset class for loading and preprocessing image-mask pairs for segmentation tasks using PyTorch.
-      
-    - **main.py** : Main script to run either a standard training/testing pipeline or initiate a Weights & Biases sweep for model training.
-      
-    - **metrics.py** : Provides functions to compute IoU and Dice scores for evaluating segmentation model performance.
-      
-    - **test.py** : Defines the testing function for a segmentation model, computing average IoU and Dice scores using a validation transform.
-      
-    - **train_val.py** : Implements training and validation loops for UNet-based segmentation models using Dice loss, LR scheduler, and Weights & Biases integration.
-      
-    - **transform.py** : Defines training and validation data augmentation pipelines using Albumentations for image preprocessing and tensor conversion.
-      
-    - **unet.py** : Implements a full U-Net architecture from scratch in PyTorch for semantic segmentation.
-      
-    - **unet_b4.py** : Defines a U-Net segmentation model using a pretrained EfficientNet-B4 encoder from the timm library for feature extraction.
-      
-    - **unet_smp.py** : Initializes a segmentation model using the segmentation_models_pytorch (SMP) library with an EfficientNet-B4 encoder.
-      
-    - **utils.py** : Plots a few examples of model predictions alongside the original image and ground truth mask.
-      
-    - **wandb_setup.py** : Performs U-Net training with EfficientNet-B4 encoder and wandb sweep tracking.
-      
-    - **wandb_sweep.py** : Defines a W&B sweep with Bayesian optimization to tune learning rate and optimizer.
+| File / Directory    | Description                                                                                                           |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `train.py`          | Main training entry point using PyTorch Lightning, MONAI, and Hydra; supports both normal and W\&B sweep modes.       |
+| `model.py`          | Contains the `SegmentationModel` class built with MONAI's `FlexibleUNet` and LightningModule for training/evaluation. |
+| `dataset.py`        | Defines `SegmentationDataModule` to handle dataset loading, splitting, and batching using MONAI Dataset API.          |
+| `custom_dataset.py` | A custom MONAI-compatible dataset class to load image-mask pairs with optional transforms.                            |
+| `transform.py`      | Image and mask preprocessing and augmentation using MONAI transforms for training and validation.                     |
+| `plot.py`           | Visualization utility to display input images, ground truth masks, and model predictions side by side.                |
 
+| Config File                         | Description                                                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `sweep.yaml`                        | W\&B sweep configuration that defines hyperparameter ranges, optimization method, and launch commands.        |
+| `config/config.yaml`                | Root Hydra config with default references and global settings (debug flags, output paths, W\&B options).      |
+| `config/data/data.yaml`             | Specifies data-related parameters like paths, batch size, number of workers, and image preprocessing.         |
+| `config/model/unet.yaml`            | Model definition using MONAI FlexibleUNet with architecture parameters, loss, and metrics setup.              |
+| `config/training/training.yaml`     | Training setup including optimizer, scheduler, early stopping, checkpointing, and Lightning trainer settings. |
+| `config/experiment/quick_test.yaml` | Experiment override for debugging — uses smaller model and fewer epochs for fast iteration.                   |
+| `config/experiment/sweep_cfg.yaml`  | Hydra config used during sweeps — receives hyperparameters from W\&B dynamically.                             |
 
 
 <br>
