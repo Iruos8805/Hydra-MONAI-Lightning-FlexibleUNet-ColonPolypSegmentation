@@ -1,0 +1,27 @@
+# config/config.yaml
+defaults:
+  - model: unet
+  - data: data
+  - training: training
+  - _self_
+
+# Global settings
+debug: false
+
+# Weights & Biases
+wandb:
+  enabled: false
+  project: "polyp_seg_monai"
+  entity: null
+  tags: []
+
+# Paths
+paths:
+  output_dir: ${hydra:runtime.output_dir}
+  checkpoint_dir: "checkpoints"
+  log_dir: ${paths.output_dir}/logs
+
+# Override from command line with +experiment=<name>
+# hydra:
+#   job:
+#     chdir: true

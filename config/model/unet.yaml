@@ -1,0 +1,23 @@
+# config/model/unet.yaml
+_target_: model.SegmentationModel
+
+# Model arch
+backbone : "efficientnet-b4"
+in_channels : 3
+out_channels : 1
+pre_trained : true
+decoder_channels : [256, 128, 64, 32, 16]
+spatial_dimensions : 2
+
+#loss function
+loss:
+  _target_ : monai.losses.DiceLoss
+  sigmoid : true
+
+#Metrics
+metrics:
+  dice:
+    _target_ : monai.metrics.DiceMetric
+    include_background : true
+    reduction : "mean"
+    get_not_nans : false

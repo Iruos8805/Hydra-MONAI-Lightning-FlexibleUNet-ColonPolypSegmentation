@@ -1,0 +1,52 @@
+# config/training/training.yaml
+
+# Optimizer settings
+optimizer:
+  _target_: torch.optim.SGD
+  lr: 0.007398
+  momentum: 0.9
+  weight_decay: 0.0001
+
+# Alternative optimizers (one can uncomment to use)
+# optimizer:
+#   _target_: torch.optim.Adam
+#   lr: 0.001
+#   weight_decay: 0.0001
+
+# optimizer:
+#   _target_: torch.optim.AdamW
+#   lr: 0.001
+#   weight_decay: 0.01
+
+# Learning rate scheduler (optional)
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  mode: "max"
+  factor: 0.5
+  patience: 5
+  verbose: true
+
+# Training parameters
+max_epochs: 10
+min_epochs: 1
+precision: 32
+accelerator: "gpu"
+devices: 1
+gradient_clip_val: 1.0
+
+# Early stopping
+early_stopping:
+  monitor: "val_dice"
+  patience: 10
+  mode: "max"
+  min_delta: 0.001
+  verbose: true
+
+# Model checkpointing
+checkpoint:
+  monitor: "val_dice"
+  mode: "max"
+  save_top_k: 1
+  save_last: true
+  filename: "best_model"
+  save_on_train_epoch_end: false

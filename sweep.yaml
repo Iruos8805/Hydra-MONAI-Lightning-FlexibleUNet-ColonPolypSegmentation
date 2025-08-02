@@ -1,0 +1,29 @@
+program: train.py
+
+method: bayes
+metric:
+  name: val_dice
+  goal: maximize
+
+parameters:
+  LR:
+    min: 0.00001
+    max: 0.01
+  OPTIMIZER:
+    values: ["adam", "sgd", "adamw"]
+  BATCH_SIZE:
+    values: [2, 4, 6]
+  PRECISION:
+    values: [16, 32]
+  NUM_WORKERS:
+    values: [4, 6, 8]
+
+command:
+  - ${env}
+  - python
+  - ${program}
+  - --config-path=config/experiment
+  - --config-name=sweep_cfg
+  - ${args_no_hyphens}
+
+count: 7
