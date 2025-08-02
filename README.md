@@ -97,6 +97,8 @@ The model used in this project is trained on 'Kvasir-SEG Dataset'. The dataset c
 - WandB sweeps were done on the model to find out the best hyperparameters.
 - The model was then trained with these hyperparameters and depending upon their performance additional adjustments were made.
 - The model was then finally tested.
+- Example prediction :
+    - ![Input](images/prediction.png) 
 
 <br>
 
