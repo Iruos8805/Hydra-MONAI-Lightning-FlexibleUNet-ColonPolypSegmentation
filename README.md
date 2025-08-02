@@ -132,10 +132,13 @@ The final hyperparameters and other parameters used are :
 - learning_rate : 0.007398
 - epochs : 10
 - precision : 32
+
+<br>
+<br>
   
-    - `DiceLoss` from MONAI was used as the loss function and `DiceMetric` from MONAI was used as the metric
+- `DiceLoss` from MONAI was used as the loss function and `DiceMetric` from MONAI was used as the metric
       
-    - On final testing, the model with the above paramters gave a performance score of 0.854 (Dice).
+- On final testing, the model with the above paramters gave a performance score of 0.854 (Dice).
       
 
 
