@@ -48,6 +48,27 @@ To run this project, you need to have Python installed. We recommend using a vir
     ```sh
     wandb sweep.yaml sweep
     ```
+3. Project Structure
+
+           ├── config/
+        │   ├── config.yaml              
+        │   ├── data/
+        │   │   └── data.yaml         
+        │   ├── model/
+        │   │   └── unet.yaml          
+        │   ├── training/
+        │   │   └── training.yaml        
+        │   └── experiment/
+        │       ├── quick_test.yaml     
+        │       └── sweep_cfg.yaml          
+        ├── train.py                   
+        ├── model.py                   
+        ├── dataset.py                  
+        ├── custom_dataset.py           
+        ├── transform.py                
+        ├── plot.py                     
+        └── sweep.yaml                  
+   
 3. The following are the files and their purpose :
    
 | File / Directory    | Description                                                                                                           |
