@@ -28,7 +28,7 @@ scheduler:
 
 trainer:
   # Training parameters
-  max_epochs: 5
+  max_epochs: 10
   min_epochs: 1
   precision: 32
   accelerator: "gpu"
