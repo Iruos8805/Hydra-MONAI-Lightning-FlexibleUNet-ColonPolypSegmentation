@@ -50,45 +50,49 @@ To run this project, you need to have Python installed. We recommend using a vir
     ```
 3. Project Structure
 
-           ├── config/
-        │   ├── config.yaml              
-        │   ├── data/
-        │   │   └── data.yaml         
-        │   ├── model/
-        │   │   └── unet.yaml          
-        │   ├── training/
-        │   │   └── training.yaml        
-        │   └── experiment/
-        │       ├── quick_test.yaml     
-        │       └── sweep_cfg.yaml          
-        ├── train.py                   
-        ├── model.py                   
-        ├── dataset.py                  
-        ├── custom_dataset.py           
-        ├── transform.py                
-        ├── plot.py                     
-        └── sweep.yaml                  
+    project/
+    ├── config/
+    │   ├── config.yaml              
+    │   ├── data/
+    │   │   └── data.yaml         
+    │   ├── model/
+    │   │   └── unet.yaml          
+    │   ├── training/
+    │   │   └── training.yaml        
+    │   ├── callbacks/
+    │   │   └── callbacks.yaml
+    │   ├── transforms/
+    │   │   └── transforms.yaml 
+    ├── train.py                   
+    ├── model.py                   
+    ├── dataset.py                  
+    ├── custom_dataset.py           
+    ├── transform.py  
+    ├── plot.py                     
+    └── sweep.yaml   
+
    
 3. The following are the files and their purpose :
    
 | File / Directory    | Description                                                                                                           |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------- |
 | `train.py`          | Main training entry point using PyTorch Lightning, MONAI, and Hydra; supports both normal and W\&B sweep modes.       |
+| `sweep.py`          | Script to launch and manage W\&B hyperparameter sweeps, integrating Hydra configs for parameter injection.            |
 | `model.py`          | Contains the `SegmentationModel` class built with MONAI's `FlexibleUNet` and LightningModule for training/evaluation. |
 | `dataset.py`        | Defines `SegmentationDataModule` to handle dataset loading, splitting, and batching using MONAI Dataset API.          |
 | `custom_dataset.py` | A custom MONAI-compatible dataset class to load image-mask pairs with optional transforms.                            |
-| `transform.py`      | Image and mask preprocessing and augmentation using MONAI transforms for training and validation.                     |
 | `plot.py`           | Visualization utility to display input images, ground truth masks, and model predictions side by side.                |
 
-| Config File                         | Description                                                                                                   |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `sweep.yaml`                        | W\&B sweep configuration that defines hyperparameter ranges, optimization method, and launch commands.        |
-| `config/config.yaml`                | Root Hydra config with default references and global settings (debug flags, output paths, W\&B options).      |
-| `config/data/data.yaml`             | Specifies data-related parameters like paths, batch size, number of workers, and image preprocessing.         |
-| `config/model/unet.yaml`            | Model definition using MONAI FlexibleUNet with architecture parameters, loss, and metrics setup.              |
-| `config/training/training.yaml`     | Training setup including optimizer, scheduler, early stopping, checkpointing, and Lightning trainer settings. |
-| `config/experiment/quick_test.yaml` | Experiment override for debugging — uses smaller model and fewer epochs for fast iteration.                   |
-| `config/experiment/sweep_cfg.yaml`  | Hydra config used during sweeps — receives hyperparameters from W\&B dynamically.                             |
+
+| Config File                         | Description                                                                                                             |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `sweep.yaml`                        | W\&B sweep configuration that defines hyperparameter ranges, optimization method, and launch commands.                  |
+| `config/config.yaml`                | Root Hydra config with default references and global settings (debug flags, output paths, W\&B options).                |
+| `config/data/data.yaml`             | Specifies data-related parameters like paths, batch size, number of workers, and image preprocessing.                   |
+| `config/model/unet.yaml`            | Model definition using MONAI FlexibleUNet with architecture parameters, loss, and metrics setup.                        |
+| `config/training/training.yaml`     | Training setup including optimizer, scheduler, early stopping, checkpointing, and Lightning trainer settings.           |
+| `config/callbacks/callbacks.yaml`   | Defines PyTorch Lightning callbacks such as `ModelCheckpoint` and `EarlyStopping` with monitoring metrics and settings. |
+| `config/transforms/transforms.yaml` | Specifies image augmentation and preprocessing transforms for training and validation datasets.                         |
 
 
 <br>
