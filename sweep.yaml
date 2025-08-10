@@ -20,7 +20,7 @@ parameters:
   data.train.num_workers:
     values: [4, 6, 8]
   training.trainer.max_epochs:
-    value: 5
+    value: 10
 
 command:
   - ${env}
