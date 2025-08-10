@@ -1,4 +1,6 @@
-program: train.py
+#sweep.yaml
+program: sweep.py
+project: PolypHydraMonai
 
 method: bayes
 metric:
@@ -6,24 +8,25 @@ metric:
   goal: maximize
 
 parameters:
-  LR:
+  training.optimizer.lr:
     min: 0.00001
     max: 0.01
-  OPTIMIZER:
-    values: ["adam", "sgd", "adamw"]
-  BATCH_SIZE:
+  training.optimizer._target_:
+    values: ["torch.optim.Adam", "torch.optim.SGD", "torch.optim.AdamW"]
+  data.train.batch_size:
     values: [2, 4, 6]
-  PRECISION:
+  training.trainer.precision:
     values: [16, 32]
-  NUM_WORKERS:
+  data.train.num_workers:
     values: [4, 6, 8]
+  training.trainer.max_epochs:
+    value: 5
 
 command:
   - ${env}
   - python
   - ${program}
-  - --config-path=config/experiment
-  - --config-name=sweep_cfg
+  - wandb_logging.enabled=true
   - ${args_no_hyphens}
 
-count: 7
+run_cap: 7

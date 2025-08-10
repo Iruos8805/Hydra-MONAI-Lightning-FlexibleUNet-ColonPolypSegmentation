@@ -1,20 +1,34 @@
 # config/data/data.yaml
-_target_: dataset.SegmentationDataModule
 
-# Data paths
-image_dir : ""
-mask_dir : ""
+# Paths and preprocessing
+image_dir: ""
+mask_dir: ""
+normalize: true
+image_size: [320, 320]
 
 # Data splitting
-test_size : 0.2
-val_size : 0.2
+test_size: 0.2
+val_size: 0.2
 random_state: 42
 
-#Data loading
-batch_size : 2
-num_workers : 8
-pin_memory : true
+# Loader-specific configs
+train:
+  batch_size: 4
+  num_workers: 8
+  pin_memory: true
+  shuffle: true
+  drop_last: true
 
-#Image processing 
-image_size : [320,320]
-normalize : true
+val:
+  batch_size: 4
+  num_workers: 4
+  pin_memory: true
+  shuffle: false
+  drop_last: false
+
+test:
+  batch_size: 4
+  num_workers: 4
+  pin_memory: true
+  shuffle: false
+  drop_last: false

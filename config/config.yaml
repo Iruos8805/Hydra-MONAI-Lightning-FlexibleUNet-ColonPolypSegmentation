@@ -1,19 +1,24 @@
 # config/config.yaml
 defaults:
-  - model: unet
   - data: data
   - training: training
+  - model: unet
+  - callbacks: callbacks
+  - transforms: transforms 
   - _self_
 
 # Global settings
 debug: false
 
+wandb_logging :
+  enabled : true
+
 # Weights & Biases
 wandb:
-  enabled: false
-  project: "polyp_seg_monai"
+  project: "PolypHydraMonai"
   entity: null
   tags: []
+  name : "segmentation_run"
 
 # Paths
 paths:
@@ -21,7 +26,7 @@ paths:
   checkpoint_dir: "checkpoints"
   log_dir: ${paths.output_dir}/logs
 
-# Override from command line with +experiment=<name>
+
 # hydra:
 #   job:
-#     chdir: true
+#     chdir: false

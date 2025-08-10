@@ -4,7 +4,6 @@ import pytorch_lightning as pl
 from torch.utils.data import DataLoader
 from monai.data import Dataset
 from custom_dataset import CustomMONAIDataset
-from transform import train_transform, val_transform
 
 
 class SegmentationDataModule(pl.LightningDataModule):
@@ -12,39 +11,47 @@ class SegmentationDataModule(pl.LightningDataModule):
         self,
         image_dir,
         mask_dir,
-        batch_size=4,
-        num_workers=4,
-        test_size=0.2,
-        val_size=0.2,
-        random_state=42,
-        pin_memory=True,
+        normalize,
+        image_size,
+        test_size,
+        val_size,
+        random_state,
+        train,
+        val,
+        test,
+        train_transform=None,
+        val_transform=None,
     ):
         super().__init__()
         self.image_dir = image_dir
         self.mask_dir = mask_dir
-        self.batch_size = batch_size
-        self.num_workers = num_workers
+        self.normalize = normalize
+        self.image_size = image_size
         self.test_size = test_size
         self.val_size = val_size
         self.random_state = random_state
-        self.pin_memory = pin_memory
+
+        self.train_cfg = train or {}
+        self.val_cfg = val or {}
+        self.test_cfg = test or {}
+
+        self.train_transform = train_transform
+        self.val_transform = val_transform
 
     def setup(self, stage=None):
-        image_filename = sorted(
+        image_filenames = sorted(
             [
                 f
                 for f in os.listdir(self.image_dir)
-                if f.endswith(("jpg", "png", "jpeg"))
+                if f.endswith(("jpg", "jpeg", "png"))
             ]
         )
-        image_paths = [os.path.join(self.image_dir, f) for f in image_filename]
-        mask_paths = [os.path.join(self.mask_dir, f) for f in image_filename]
+        image_paths = [os.path.join(self.image_dir, f) for f in image_filenames]
+        mask_paths = [os.path.join(self.mask_dir, f) for f in image_filenames]
 
-        assert all(os.path.exists(m) for m in mask_paths), "Some masks are missing"
+        assert all(os.path.exists(p) for p in mask_paths), "Some masks are missing."
 
-        data_dicts = [
-            {"image": img, "label": lbl} for img, lbl in zip(image_paths, mask_paths)
-        ]  # MONAI expects dict
+        data_dicts = [{"image": i, "label": m} for i, m in zip(image_paths, mask_paths)]
 
         trainval, test = train_test_split(
             data_dicts, test_size=self.test_size, random_state=self.random_state
@@ -54,33 +61,36 @@ class SegmentationDataModule(pl.LightningDataModule):
             trainval, test_size=val_ratio, random_state=self.random_state
         )
 
-        self.train_ds = CustomMONAIDataset(data=train, transform=train_transform)
-        self.val_ds = CustomMONAIDataset(data=val, transform=val_transform)
-        self.test_ds = CustomMONAIDataset(data=test, transform=val_transform)
+        self.train_ds = CustomMONAIDataset(train, transform=self.train_transform)
+        self.val_ds = CustomMONAIDataset(val, transform=self.val_transform)
+        self.test_ds = CustomMONAIDataset(test, transform=self.val_transform)
 
     def train_dataloader(self):
         return DataLoader(
             self.train_ds,
-            batch_size=self.batch_size,
-            shuffle=True,
-            num_workers=self.num_workers,
-            pin_memory=self.pin_memory,
+            batch_size=self.train_cfg.get("batch_size", 4),
+            shuffle=self.train_cfg.get("shuffle", True),
+            num_workers=self.train_cfg.get("num_workers", 4),
+            pin_memory=self.train_cfg.get("pin_memory", True),
+            drop_last=self.train_cfg.get("drop_last", True),
         )
 
     def val_dataloader(self):
         return DataLoader(
             self.val_ds,
-            batch_size=self.batch_size,
-            shuffle=False,
-            num_workers=self.num_workers,
-            pin_memory=self.pin_memory,
+            batch_size=self.val_cfg.get("batch_size", 4),
+            shuffle=self.val_cfg.get("shuffle", False),
+            num_workers=self.val_cfg.get("num_workers", 4),
+            pin_memory=self.val_cfg.get("pin_memory", True),
+            drop_last=self.val_cfg.get("drop_last", False),
         )
 
     def test_dataloader(self):
         return DataLoader(
             self.test_ds,
-            batch_size=self.batch_size,
-            shuffle=False,
-            num_workers=self.num_workers,
-            pin_memory=self.pin_memory,
+            batch_size=self.test_cfg.get("batch_size", 4),
+            shuffle=self.test_cfg.get("shuffle", False),
+            num_workers=self.test_cfg.get("num_workers", 4),
+            pin_memory=self.test_cfg.get("pin_memory", True),
+            drop_last=self.test_cfg.get("drop_last", False),
         )

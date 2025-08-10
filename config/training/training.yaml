@@ -26,27 +26,11 @@ scheduler:
   patience: 5
   verbose: true
 
-# Training parameters
-max_epochs: 10
-min_epochs: 1
-precision: 32
-accelerator: "gpu"
-devices: 1
-gradient_clip_val: 1.0
-
-# Early stopping
-early_stopping:
-  monitor: "val_dice"
-  patience: 10
-  mode: "max"
-  min_delta: 0.001
-  verbose: true
-
-# Model checkpointing
-checkpoint:
-  monitor: "val_dice"
-  mode: "max"
-  save_top_k: 1
-  save_last: true
-  filename: "best_model"
-  save_on_train_epoch_end: false
+trainer:
+  # Training parameters
+  max_epochs: 5
+  min_epochs: 1
+  precision: 32
+  accelerator: "gpu"
+  devices: 1
+  gradient_clip_val: 1.0

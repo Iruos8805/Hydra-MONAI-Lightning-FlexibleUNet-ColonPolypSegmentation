@@ -1,0 +1,96 @@
+train:
+  _target_: monai.transforms.Compose
+  transforms:
+    - _target_: monai.transforms.LoadImaged
+      keys: ["image", "label"]
+    - _target_: monai.transforms.EnsureChannelFirstd
+      keys: ["image", "label"]
+    - _target_: monai.transforms.Lambdad
+      keys: ["label"]
+      func:
+        _target_: builtins.eval
+        _args_: ["lambda x: x[:1]"]
+    - _target_: monai.transforms.Resized
+      keys: ["image", "label"]
+      spatial_size: [320, 320]
+    - _target_: monai.transforms.RandFlipd
+      keys: ["image", "label"]
+      spatial_axis: 0
+      prob: 0.5
+    - _target_: monai.transforms.RandFlipd
+      keys: ["image", "label"]
+      spatial_axis: 1
+      prob: 0.5
+    - _target_: monai.transforms.RandRotate90d
+      keys: ["image", "label"]
+      prob: 0.25
+      max_k: 3
+    - _target_: monai.transforms.ScaleIntensityRanged
+      keys: ["image"]
+      a_min: 0
+      a_max: 255
+      b_min: 0.0
+      b_max: 1.0
+      clip: true
+    - _target_: monai.transforms.ScaleIntensityRanged
+      keys: ["label"]
+      a_min: 0
+      a_max: 255
+      b_min: 0.0
+      b_max: 1.0
+      clip: true
+    - _target_: monai.transforms.RandGaussianNoised
+      keys: ["image"]
+      prob: 0.2
+      mean: 0.0
+      std: 0.01
+    - _target_: monai.transforms.RandZoomd
+      keys: ["image", "label"]
+      min_zoom: 0.9
+      max_zoom: 1.1
+      prob: 0.2
+      mode: ["bilinear", "nearest"]
+    - _target_: monai.transforms.RandAffined
+      keys: ["image", "label"]
+      rotate_range: [0.0, 0.0, 0.1]
+      scale_range: [0.05, 0.05, 0.0]
+      prob: 0.2
+      mode: ["bilinear", "nearest"]
+    - _target_: monai.transforms.RandShiftIntensityd
+      keys: ["image"]
+      offsets: 0.05
+      prob: 0.3
+    - _target_: monai.transforms.EnsureTyped
+      keys: ["image", "label"]
+
+val:
+  _target_: monai.transforms.Compose
+  transforms:
+    - _target_: monai.transforms.LoadImaged
+      keys: ["image", "label"]
+    - _target_: monai.transforms.EnsureChannelFirstd
+      keys: ["image", "label"]
+    - _target_: monai.transforms.Lambdad
+      keys: ["label"]
+      func:
+        _target_: builtins.eval
+        _args_: ["lambda x: x[:1]"]
+    - _target_: monai.transforms.Resized
+      keys: ["image", "label"]
+      spatial_size: [320, 320]
+    - _target_: monai.transforms.ScaleIntensityRanged
+      keys: ["image"]
+      a_min: 0
+      a_max: 255
+      b_min: 0.0
+      b_max: 1.0
+      clip: true
+    - _target_: monai.transforms.ScaleIntensityRanged
+      keys: ["label"]
+      a_min: 0
+      a_max: 255
+      b_min: 0.0
+      b_max: 1.0
+      clip: true
+    - _target_: monai.transforms.EnsureTyped
+      keys: ["image", "label"]
