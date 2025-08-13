@@ -50,26 +50,27 @@ To run this project, you need to have Python installed. We recommend using a vir
     ```
 3. Project Structure
 
-    project/
-    ├── config/
-    │   ├── config.yaml              
-    │   ├── data/
-    │   │   └── data.yaml         
-    │   ├── model/
-    │   │   └── unet.yaml          
-    │   ├── training/
-    │   │   └── training.yaml        
-    │   ├── callbacks/
-    │   │   └── callbacks.yaml
-    │   ├── transforms/
-    │   │   └── transforms.yaml 
-    ├── train.py                   
-    ├── model.py                   
-    ├── dataset.py                  
-    ├── custom_dataset.py           
-    ├── transform.py  
-    ├── plot.py                     
-    └── sweep.yaml   
+project/
+├── config/
+│   ├── config.yaml
+│   ├── data/
+│   │   └── data.yaml
+│   ├── model/
+│   │   └── unet.yaml
+│   ├── training/
+│   │   └── training.yaml
+│   ├── callbacks/
+│   │   └── callbacks.yaml
+│   ├── transforms/
+│   │   └── transforms.yaml
+├── train.py
+├── model.py
+├── dataset.py
+├── custom_dataset.py
+├── transform.py
+├── plot.py
+└── sweep.yaml
+
 
    
 3. The following are the files and their purpose :
