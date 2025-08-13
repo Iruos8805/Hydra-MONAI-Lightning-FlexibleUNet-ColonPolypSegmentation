@@ -48,8 +48,9 @@ To run this project, you need to have Python installed. We recommend using a vir
     ```sh
     wandb sweep.yaml sweep
     ```
-3. Project Structure
+3. **Project Structure:**
 
+```
 project/
 ├── config/
 │   ├── config.yaml
@@ -70,7 +71,7 @@ project/
 ├── transform.py
 ├── plot.py
 └── sweep.yaml
-
+```
 
    
 3. The following are the files and their purpose :
